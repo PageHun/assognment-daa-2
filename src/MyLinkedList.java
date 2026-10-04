@@ -1,4 +1,4 @@
-public class LinkedList {
+public class MyLinkedList {
     private static class Node {
         int value;
         Node prev;
@@ -14,7 +14,7 @@ public class LinkedList {
     private int size;
     private final Metrics metrics;
 
-    public LinkedList() {
+    public MyLinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;

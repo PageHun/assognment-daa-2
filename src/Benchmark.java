@@ -86,7 +86,7 @@ public class Benchmark {
             long[] times = new long[MEASURE_RUNS];
             Metrics last = null;
             for (int run = 0; run < WARMUP_RUNS + MEASURE_RUNS; run++) {
-                LinkedList ll = new LinkedList();
+                MyLinkedList ll = new MyLinkedList();
                 for (int v : data) ll.add(v);
                 ll.resetMetrics();
                 Random r = new Random(SEED + 1);
@@ -146,7 +146,7 @@ public class Benchmark {
             long[] times = new long[MEASURE_RUNS];
             Metrics last = null;
             for (int run = 0; run < WARMUP_RUNS + MEASURE_RUNS; run++) {
-                LinkedList ll = new LinkedList();
+                MyLinkedList ll = new MyLinkedList();
                 for (int v : data) ll.add(v);
                 ll.resetMetrics();
                 long t0 = System.nanoTime();
@@ -205,7 +205,7 @@ public class Benchmark {
             long[] times = new long[MEASURE_RUNS];
             Metrics last = null;
             for (int run = 0; run < WARMUP_RUNS + MEASURE_RUNS; run++) {
-                LinkedList ll = new LinkedList();
+                MyLinkedList ll = new MyLinkedList();
                 for (int v : data) ll.add(v);
                 ll.resetMetrics();
                 long t0 = System.nanoTime();

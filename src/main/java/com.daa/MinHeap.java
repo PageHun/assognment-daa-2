@@ -1,3 +1,5 @@
+package com.daa;
+
 public class MinHeap {
     private int[] data;
     private int size;

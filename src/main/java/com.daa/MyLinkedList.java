@@ -1,3 +1,5 @@
+package com.daa;
+
 public class MyLinkedList {
     private static class Node {
         int value;

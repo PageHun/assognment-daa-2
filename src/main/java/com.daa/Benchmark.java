@@ -1,5 +1,6 @@
+package com.daa;
+
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class Benchmark {
             runW4(n, rows);
         }
 
-        try (PrintWriter pw = new PrintWriter(new FileWriter("results.csv"))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("results/results.csv"))) {
             for (String r : rows) {
                 pw.println(r);
             }

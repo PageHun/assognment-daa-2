@@ -1,3 +1,5 @@
+package com.daa;
+
 public class Metrics {
     private long steps;
     private long moves;

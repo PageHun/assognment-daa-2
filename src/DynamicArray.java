@@ -1,6 +1,7 @@
 public class DynamicArray {
     private int[] data;
     private int size;
+    private final Metrics metrics;
 
     public DynamicArray() {
         this(16);
@@ -10,6 +11,15 @@ public class DynamicArray {
         if (capacity < 1) capacity = 1;
         this.data = new int[capacity];
         this.size = 0;
+        this.metrics = new Metrics();
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
+    }
+
+    public void resetMetrics() {
+        metrics.reset();
     }
 
     public int size() {
@@ -23,6 +33,7 @@ public class DynamicArray {
     public void add(int x) {
         ensureCapacity(size + 1);
         data[size] = x;
+        metrics.addMove();
         size++;
     }
 
@@ -32,9 +43,12 @@ public class DynamicArray {
         }
         ensureCapacity(size + 1);
         for (int i = size; i > index; i--) {
+            metrics.addStep();
             data[i] = data[i - 1];
+            metrics.addMove();
         }
         data[index] = x;
+        metrics.addMove();
         size++;
     }
 
@@ -42,10 +56,12 @@ public class DynamicArray {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
+        metrics.addStep();
         int removed = data[index];
-        // shift left
         for (int i = index; i < size - 1; i++) {
+            metrics.addStep(); // read data[i+1]
             data[i] = data[i + 1];
+            metrics.addMove();
         }
         size--;
         return removed;
@@ -55,11 +71,14 @@ public class DynamicArray {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
+        metrics.addStep();
         return data[index];
     }
 
     public boolean contains(int x) {
         for (int i = 0; i < size; i++) {
+            metrics.addStep();
+            metrics.addComparison();
             if (data[i] == x) {
                 return true;
             }
@@ -77,7 +96,9 @@ public class DynamicArray {
         }
         int[] newData = new int[newCap];
         for (int i = 0; i < size; i++) {
+            metrics.addStep();
             newData[i] = data[i];
+            metrics.addMove();
         }
         data = newData;
     }

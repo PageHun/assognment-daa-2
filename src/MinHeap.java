@@ -1,6 +1,7 @@
 public class MinHeap {
     private int[] data;
     private int size;
+    private final Metrics metrics;
 
     public MinHeap() {
         this(16);
@@ -10,6 +11,15 @@ public class MinHeap {
         if (capacity < 1) capacity = 1;
         this.data = new int[capacity];
         this.size = 0;
+        this.metrics = new Metrics();
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
+    }
+
+    public void resetMetrics() {
+        metrics.reset();
     }
 
     public int size() {
@@ -23,6 +33,7 @@ public class MinHeap {
     public void insert(int x) {
         ensureCapacity(size + 1);
         data[size] = x;
+        metrics.addMove();
         size++;
         bubbleUp(size - 1);
     }
@@ -31,6 +42,7 @@ public class MinHeap {
         if (size == 0) {
             throw new IllegalStateException("Heap is empty");
         }
+        metrics.addStep();
         return data[0];
     }
 
@@ -38,10 +50,12 @@ public class MinHeap {
         if (size == 0) {
             throw new IllegalStateException("Heap is empty");
         }
+        metrics.addStep();
         int min = data[0];
         size--;
         if (size > 0) {
             data[0] = data[size];
+            metrics.addMove();
             bubbleDown(0);
         }
         return min;
@@ -54,6 +68,7 @@ public class MinHeap {
         size = array.length;
         data = new int[Math.max(size, 16)];
         System.arraycopy(array, 0, data, 0, size);
+        metrics.addMoves(size);
         for (int i = (size / 2) - 1; i >= 0; i--) {
             bubbleDown(i);
         }
@@ -62,12 +77,17 @@ public class MinHeap {
     private void bubbleUp(int index) {
         while (index > 0) {
             int parent = (index - 1) / 2;
+            metrics.addStep();
+            metrics.addStep();
+            metrics.addComparison();
             if (data[index] >= data[parent]) {
                 break;
             }
             int temp = data[index];
             data[index] = data[parent];
             data[parent] = temp;
+            metrics.addMove();
+            metrics.addMove();
             index = parent;
         }
     }
@@ -79,11 +99,17 @@ public class MinHeap {
             int smallest = index;
 
             if (left < size) {
+                metrics.addStep();
+                metrics.addStep();
+                metrics.addComparison();
                 if (data[left] < data[smallest]) {
                     smallest = left;
                 }
             }
             if (right < size) {
+                metrics.addStep();
+                metrics.addStep();
+                metrics.addComparison();
                 if (data[right] < data[smallest]) {
                     smallest = right;
                 }
@@ -91,9 +117,12 @@ public class MinHeap {
             if (smallest == index) {
                 break;
             }
+            // swap
             int temp = data[index];
             data[index] = data[smallest];
             data[smallest] = temp;
+            metrics.addMove();
+            metrics.addMove();
             index = smallest;
         }
     }
@@ -104,7 +133,9 @@ public class MinHeap {
         if (newCap < minCapacity) newCap = minCapacity;
         int[] newData = new int[newCap];
         for (int i = 0; i < size; i++) {
+            metrics.addStep();
             newData[i] = data[i];
+            metrics.addMove();
         }
         data = newData;
     }
